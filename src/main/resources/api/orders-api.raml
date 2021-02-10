@@ -1,0 +1,99 @@
+#%RAML 1.0
+types:
+  LineItem:
+    properties:
+      id:
+        example: Example
+        type: string
+      sku:
+        example: Example
+        type: string
+      unit-price:
+        example: 1
+        type: number
+        format: float
+      quantity:
+        example: 1
+        type: number
+        format: int
+      final-price:
+        example: 1
+        type: number
+        format: float
+      taxable:
+        example: true
+        type: boolean
+      inv-stock-qty?:
+        example: 1
+        type: number
+        format: int
+  Items:
+    items:
+      type: LineItem
+  Order:
+    properties:
+      oid:
+        example: Example
+        type: string
+      account-id:
+        example: Example@gmail.com
+        type: string
+        pattern: "[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*"
+      items:
+        type: Items
+        items:
+          type: LineItem
+      order-date:
+        example: 2020-10-19T07:00:52
+        type: datetime-only
+      status:
+        example: Example
+        type: string
+      total-price?:
+        example: 1
+        type: number
+        format: float
+      total-tax?:
+        example: 1
+        type: number
+        format: float
+  Orders:
+    items:
+      type: Order
+title: Orders API
+mediaType:
+  - application/json
+version: v1
+protocols:
+  - HTTP
+/orders:
+  get:
+    displayName: get List of order objects
+    responses:
+      "200":
+        description: "this is "
+        body:
+          type: Orders
+          items:
+            type: Order
+  post:
+    displayName: place a new order
+    body:
+      type: Order
+    responses:
+      "201":
+        body:
+          example: Order Created
+          type: string
+/orders/{oid}:
+  get:
+    responses:
+      "200":
+        body:
+          type: Order
+  delete:
+    responses:
+      "200":
+        body:
+          example: Order deleted(virtually)
+          type: string
